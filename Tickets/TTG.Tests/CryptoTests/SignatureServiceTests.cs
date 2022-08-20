@@ -1,32 +1,17 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Moonshine.Core.Security.Cryptography.Contracts;
-using Moonshine.Core.Security.Cryptography.KeyStore.Contracts;
-using Moonshine.Core.Security.Cryptography.KeyStore.Dto;
-using MoonshineTest.Moqs;
-using Moq;
 using Xunit;
 
 namespace MoonshineTest.Services.CryptoTests;
 
-public class SignatureServiceTests : BaseTest
+public class SignatureServiceTests : BaseCryptoTest
 {
     private readonly ISignatureService _signatureService;
 
     public SignatureServiceTest()
     {
-        AddMoq<IAsymmetricKeyStoreProvider>(moq =>
-        {
-            moq.Setup(x => x.GetKeyInfo(It.IsAny<CancellationToken>())).ReturnsAsync(new AsymmetricKeyStoreValue
-            {
-                PrivateKey = AsymmetricKeyStoreValuesMoq.PrivateKey,
-                PublicKey = AsymmetricKeyStoreValuesMoq.PublicKey
-            });
-        });
-        
         _signatureService = ServiceProvider.GetRequiredService<ISignatureService>();
-
     }
 
     [Theory]

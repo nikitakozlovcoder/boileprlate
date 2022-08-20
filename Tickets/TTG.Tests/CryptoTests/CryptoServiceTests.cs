@@ -1,32 +1,18 @@
 ﻿using System;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Moonshine.Core.Security.Cryptography.Contracts;
-using Moonshine.Core.Security.Cryptography.KeyStore.Contracts;
-using Moonshine.Core.Security.Cryptography.KeyStore.Dto;
-using MoonshineTest.Moqs;
-using Moq;
 using Xunit;
 
 namespace MoonshineTest.Services.CryptoTests;
 
-public class CryptoServiceTests : BaseTest
+public class CryptoServiceTests : BaseCryptoTest
 {
     private readonly ICryptoService _cryptoService;
 
     public CryptoServiceTest()
     {
-        AddMoq<IAsymmetricKeyStoreProvider>(moq =>
-        {
-            moq.Setup(x => x.GetKeyInfo(It.IsAny<CancellationToken>())).ReturnsAsync(new AsymmetricKeyStoreValue
-            {
-                PrivateKey = AsymmetricKeyStoreValuesMoq.PrivateKey,
-                PublicKey = AsymmetricKeyStoreValuesMoq.PublicKey
-            });
-        });
-       
         _cryptoService = ServiceProvider.GetRequiredService<ICryptoService>();
     }
 
