@@ -68,6 +68,10 @@ public class RsaCryptoService : ICryptoService, ISignatureService
         return Verify(bytes, signature, ct);
     }
 
+    private static byte[] GetTextBytes(string text) => Encoding.UTF8.GetBytes(text);
+
+    private static string GetTextFromBytes(byte[] bytes) => Encoding.UTF8.GetString(bytes);
+
     private async ValueTask<RSACryptoServiceProvider> GetRsaCryptoServiceProvider(KeyType keyType, CancellationToken ct)
     {
         var keys = await _keysProvider.GetValue(ct);
@@ -96,16 +100,5 @@ public class RsaCryptoService : ICryptoService, ISignatureService
         }
         
         return rsaProvider;
-    }
-    
-    private static byte[] GetTextBytes(string text)
-    {
-        return Encoding.UTF8.GetBytes(text);
-    }
-    
-    private static string GetTextFromBytes(byte[] bytes)
-    {
-        var utf8 = new UTF8Encoding();
-        return utf8.GetString(bytes);
     }
 }
